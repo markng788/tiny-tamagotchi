@@ -232,13 +232,6 @@ function onRest() {
   afterAction();
 }
 
-// ── Reset ──────────────────────────────────────────────────────────────────
-
-document.getElementById('btn-reset').addEventListener('click', function () {
-  localStorage.clear();
-  location.reload();
-});
-
 // ── Naming screen ──────────────────────────────────────────────────────────
 
 /** Show game screen and start the game loop. */
@@ -274,6 +267,11 @@ function onStartClick() {
 // ── Init ───────────────────────────────────────────────────────────────────
 
 function init() {
+  // Reset button — clears all data and reloads to naming screen
+  document.getElementById('btn-reset').addEventListener('click', function () {
+    localStorage.clear();
+    window.location.href = window.location.href;
+  });
   const savedName = localStorage.getItem(KEY_NAME);
 
   if (savedName) {
