@@ -95,36 +95,40 @@ function applyOfflineDecay() {
 
 /**
  * Evaluate and apply the correct pet state based on current stats.
- * Priority: sick > evolved > normal.
- * Also advances / resets the evolved timer.
+ * Priority: Sick > Evolved > Normal (FR-2 overrides all).
+ *
+ * @param {boolean} isTick - true only when called from the 30-second tick.
+ *   The evolved timer increments only on real ticks (FR-4); resets happen
+ *   on both ticks and button actions.
  */
-function evaluateState() {
-  // Sick: any stat at 0
+function evaluateState(isTick) {
+  // ── FR-2: Sick — any stat at 0, highest priority ──────────────────────
   if (hunger === 0 || happiness === 0 || energy === 0) {
     if (petState !== 'sick') {
       petState     = 'sick';
-      evolvedTimer = 0;
+      evolvedTimer = 0; // FR-3: reset on entering sick
     }
     return;
   }
 
-  // Recovery from sick: all stats above 30
+  // ── FR-2: Recovery from Sick — all stats above 30 ─────────────────────
   if (petState === 'sick') {
     if (hunger > 30 && happiness > 30 && energy > 30) {
       petState     = 'normal';
-      evolvedTimer = 0; // timer starts fresh after recovery
+      evolvedTimer = 0; // FR-3: timer starts fresh after recovery
     }
     return; // stay sick until recovery threshold met
   }
 
-  // Evolved timer: advance only when all stats > 70
+  // ── FR-3 / FR-4: Evolved timer ─────────────────────────────────────────
   if (hunger > 70 && happiness > 70 && energy > 70) {
-    evolvedTimer += TICK_MS / 1000; // add 30 seconds
+    // Increment only on a real 30-second tick, not on every button press
+    if (isTick) evolvedTimer += 30;
     if (evolvedTimer >= 300) {
-      petState = 'evolved';
+      petState = 'evolved'; // FR-3: trigger evolved at 300 s
     }
   } else {
-    // Any stat dropped below 70 — reset timer, drop out of evolved
+    // Any stat dropped below 70 — reset timer and exit evolved (FR-3)
     if (petState === 'evolved') petState = 'normal';
     evolvedTimer = 0;
   }
@@ -184,7 +188,7 @@ function tick() {
   happiness = clamp(happiness - DECAY_HAPPINESS, 0, 100);
   energy    = clamp(energy    - DECAY_ENERGY,    0, 100);
 
-  evaluateState();
+  evaluateState(true); // real tick — evolved timer may advance
   saveToStorage();
   render();
 }
@@ -193,7 +197,7 @@ function tick() {
 
 /** Shared post-action routine: evaluate state, save, and re-render. */
 function afterAction() {
-  evaluateState();
+  evaluateState(false); // button action — timer resets apply but no increment
   saveToStorage();
   render();
 }
@@ -226,7 +230,7 @@ function onRest() {
 function init() {
   loadFromStorage();
   applyOfflineDecay();
-  evaluateState();
+  evaluateState(false); // on load — re-evaluate state, no timer increment
   saveToStorage();
   render();
 
