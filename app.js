@@ -267,10 +267,10 @@ function onStartClick() {
 // ── Init ───────────────────────────────────────────────────────────────────
 
 function init() {
-  // Reset button — clears all data and reloads to naming screen
+  // Reset button — clears all localStorage and reloads to naming screen
   document.getElementById('btn-reset').addEventListener('click', function () {
     localStorage.clear();
-    window.location.href = window.location.href;
+    location.reload();
   });
   const savedName = localStorage.getItem(KEY_NAME);
 
