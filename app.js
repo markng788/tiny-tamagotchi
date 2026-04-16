@@ -2,9 +2,10 @@
 const KEY_HUNGER     = 'tama_hunger';
 const KEY_HAPPINESS  = 'tama_happiness';
 const KEY_ENERGY     = 'tama_energy';
-const KEY_LAST_SAVED = 'tama_last_saved';
-const KEY_STATE      = 'tama_state';
+const KEY_LAST_SAVED    = 'tama_last_saved';
+const KEY_STATE         = 'tama_state';
 const KEY_EVOLVED_TIMER = 'tama_evolved_timer';
+const KEY_NAME          = 'tama_name';
 
 // ── Decay rates per 30-second tick ────────────────────────────────────────
 const DECAY_HUNGER    = 5;
@@ -19,8 +20,14 @@ let happiness  = 80;
 let energy     = 80;
 let petState   = 'normal'; // 'normal' | 'sick' | 'evolved'
 let evolvedTimer = 0;      // seconds accumulated above 70
+let petName    = '';
 
 // ── DOM references ─────────────────────────────────────────────────────────
+const namingScreen  = document.getElementById('naming-screen');
+const gameScreen    = document.getElementById('game-screen');
+const nameInput     = document.getElementById('name-input');
+const btnStart      = document.getElementById('btn-start');
+const petNameEl     = document.getElementById('pet-name');
 const petEl         = document.getElementById('pet');
 const stateMsg      = document.getElementById('state-message');
 const barHunger     = document.getElementById('bar-hunger');
@@ -225,21 +232,59 @@ function onRest() {
   afterAction();
 }
 
-// ── Init ───────────────────────────────────────────────────────────────────
+// ── Naming screen ──────────────────────────────────────────────────────────
 
-function init() {
+/** Show game screen and start the game loop. */
+function startGame() {
+  namingScreen.classList.add('hidden');
+  gameScreen.classList.remove('hidden');
+  petNameEl.textContent = petName;
+
   loadFromStorage();
   applyOfflineDecay();
-  evaluateState(false); // on load — re-evaluate state, no timer increment
+  evaluateState(false);
   saveToStorage();
   render();
 
-  // Wire up action buttons
   btnFeed.addEventListener('click', onFeed);
   btnPlay.addEventListener('click', onPlay);
   btnRest.addEventListener('click', onRest);
 
   setInterval(tick, TICK_MS);
+}
+
+function onStartClick() {
+  const entered = nameInput.value.trim();
+  if (!entered) {
+    nameInput.focus();
+    return;
+  }
+  petName = entered;
+  localStorage.setItem(KEY_NAME, petName);
+  startGame();
+}
+
+// ── Init ───────────────────────────────────────────────────────────────────
+
+function init() {
+  const savedName = localStorage.getItem(KEY_NAME);
+
+  if (savedName) {
+    // Returning visit — skip naming screen
+    petName = savedName;
+    startGame();
+  } else {
+    // First visit — show naming screen
+    gameScreen.classList.add('hidden');
+    namingScreen.classList.remove('hidden');
+    nameInput.focus();
+
+    btnStart.addEventListener('click', onStartClick);
+    // Allow pressing Enter to submit
+    nameInput.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') onStartClick();
+    });
+  }
 }
 
 init();

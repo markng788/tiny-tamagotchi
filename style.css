@@ -124,6 +124,74 @@ h1 {
   text-align: right;
 }
 
+/* ── Utility ── */
+.hidden { display: none !important; }
+
+/* ── Naming screen ── */
+#naming-screen {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  margin-top: 6rem;
+}
+
+#naming-prompt {
+  font-size: 1rem;
+  color: #aaa;
+}
+
+#name-input {
+  width: 100%;
+  padding: 0.6rem 0.9rem;
+  font-family: monospace;
+  font-size: 1rem;
+  background: #2e2e4a;
+  border: 2px solid #c9b8ff;
+  border-radius: 8px;
+  color: #e0e0e0;
+  text-align: center;
+  outline: none;
+}
+
+#name-input::placeholder {
+  color: #555;
+}
+
+#name-input:focus {
+  border-color: #e0d0ff;
+}
+
+#btn-start {
+  padding: 0.65rem 2.5rem;
+  font-family: monospace;
+  font-size: 1rem;
+  font-weight: bold;
+  letter-spacing: 0.05em;
+  border: 2px solid #c9b8ff;
+  border-radius: 8px;
+  background: transparent;
+  color: #c9b8ff;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+#btn-start:hover {
+  background-color: #c9b8ff;
+  color: #1a1a2e;
+}
+
+/* ── Pet name display ── */
+#pet-name {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #c9b8ff;
+  letter-spacing: 0.05em;
+  min-height: 1.4em;
+}
+
 /* ── Action buttons ── */
 #actions {
   display: flex;

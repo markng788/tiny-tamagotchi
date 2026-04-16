@@ -7,8 +7,21 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!-- Naming screen — shown only on first visit -->
+  <div id="naming-screen">
+    <h1>Tiny Tamagotchi</h1>
+    <p id="naming-prompt">What will you name your pet?</p>
+    <input id="name-input" type="text" maxlength="16" placeholder="Enter a name..." autocomplete="off" />
+    <button id="btn-start">Start</button>
+  </div>
+
+  <!-- Game screen — hidden until name is set -->
+  <div id="game-screen" class="hidden">
   <div id="app">
     <h1>Tiny Tamagotchi</h1>
+
+    <!-- Pet name -->
+    <p id="pet-name"></p>
 
     <!-- Pet display -->
     <div id="pet" class="state-normal">
@@ -54,6 +67,7 @@
       <button id="btn-rest">Rest</button>
     </div>
   </div>
+  </div><!-- /game-screen -->
 
   <script src="app.js"></script>
 </body>
