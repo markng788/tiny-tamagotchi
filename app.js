@@ -29,6 +29,9 @@ const barEnergy     = document.getElementById('bar-energy');
 const valHunger     = document.getElementById('val-hunger');
 const valHappiness  = document.getElementById('val-happiness');
 const valEnergy     = document.getElementById('val-energy');
+const btnFeed       = document.getElementById('btn-feed');
+const btnPlay       = document.getElementById('btn-play');
+const btnRest       = document.getElementById('btn-rest');
 
 // ── Helpers ────────────────────────────────────────────────────────────────
 
@@ -156,11 +159,22 @@ function updatePetVisual() {
   }
 }
 
+/** Update disabled state of action buttons based on current stats (FR-4). */
+function updateButtons() {
+  // Feed disabled when Hunger is already at 100
+  btnFeed.disabled = (hunger >= 100);
+  // Play disabled when Energy is at 0 (too tired to play)
+  btnPlay.disabled = (energy <= 0);
+  // Rest disabled when Energy is already at 100
+  btnRest.disabled = (energy >= 100);
+}
+
 function render() {
   updateBar(barHunger,    valHunger,    hunger);
   updateBar(barHappiness, valHappiness, happiness);
   updateBar(barEnergy,    valEnergy,    energy);
   updatePetVisual();
+  updateButtons();
 }
 
 // ── Tick ───────────────────────────────────────────────────────────────────
@@ -175,6 +189,38 @@ function tick() {
   render();
 }
 
+// ── Action handlers ────────────────────────────────────────────────────────
+
+/** Shared post-action routine: evaluate state, save, and re-render. */
+function afterAction() {
+  evaluateState();
+  saveToStorage();
+  render();
+}
+
+// FR-1: Feed — Hunger +20, capped at 100
+function onFeed() {
+  if (btnFeed.disabled) return;
+  hunger = Math.min(hunger + 20, 100);
+  afterAction();
+}
+
+// FR-2: Play — Happiness +20 (cap 100), Energy -10 (floor 0)
+function onPlay() {
+  if (btnPlay.disabled) return;
+  happiness = Math.min(happiness + 20, 100);
+  energy    = Math.max(energy    - 10,   0);
+  afterAction();
+}
+
+// FR-3: Rest — Energy +30 (cap 100), Happiness -5 (floor 0)
+function onRest() {
+  if (btnRest.disabled) return;
+  energy    = Math.min(energy    + 30, 100);
+  happiness = Math.max(happiness -  5,   0);
+  afterAction();
+}
+
 // ── Init ───────────────────────────────────────────────────────────────────
 
 function init() {
@@ -183,6 +229,11 @@ function init() {
   evaluateState();
   saveToStorage();
   render();
+
+  // Wire up action buttons
+  btnFeed.addEventListener('click', onFeed);
+  btnPlay.addEventListener('click', onPlay);
+  btnRest.addEventListener('click', onRest);
 
   setInterval(tick, TICK_MS);
 }

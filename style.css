@@ -123,3 +123,38 @@ h1 {
   color: #ccc;
   text-align: right;
 }
+
+/* ── Action buttons ── */
+#actions {
+  display: flex;
+  gap: 0.75rem;
+  width: 100%;
+  justify-content: center;
+}
+
+#actions button {
+  flex: 1;
+  padding: 0.65rem 0;
+  font-family: monospace;
+  font-size: 0.95rem;
+  font-weight: bold;
+  letter-spacing: 0.05em;
+  border: 2px solid #c9b8ff;
+  border-radius: 8px;
+  background: transparent;
+  color: #c9b8ff;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, opacity 0.15s ease;
+}
+
+#actions button:hover:not(:disabled) {
+  background-color: #c9b8ff;
+  color: #1a1a2e;
+}
+
+#actions button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  border-color: #555;
+  color: #555;
+}
