@@ -226,3 +226,24 @@ h1 {
   border-color: #555;
   color: #555;
 }
+
+/* ── Reset button ── */
+#btn-reset {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  padding: 0.3rem 0.6rem;
+  font-family: monospace;
+  font-size: 0.7rem;
+  background: transparent;
+  border: 1px solid #333;
+  border-radius: 5px;
+  color: #444;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+#btn-reset:hover {
+  color: #888;
+  border-color: #666;
+}

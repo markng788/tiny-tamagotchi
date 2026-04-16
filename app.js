@@ -232,6 +232,13 @@ function onRest() {
   afterAction();
 }
 
+// ── Reset ──────────────────────────────────────────────────────────────────
+
+document.getElementById('btn-reset').addEventListener('click', function () {
+  localStorage.clear();
+  location.reload();
+});
+
 // ── Naming screen ──────────────────────────────────────────────────────────
 
 /** Show game screen and start the game loop. */
