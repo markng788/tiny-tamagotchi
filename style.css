@@ -1,0 +1,125 @@
+/* ── Reset & base ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: monospace;
+  background: #1a1a2e;
+  color: #e0e0e0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding: 2rem 1rem;
+}
+
+/* ── App container ── */
+#app {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+h1 {
+  font-size: 1.6rem;
+  letter-spacing: 0.1em;
+  color: #c9b8ff;
+}
+
+/* ── Pet display ── */
+#pet {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  text-align: center;
+  line-height: 1.4;
+  transition: background-color 0.4s ease, box-shadow 0.4s ease;
+  user-select: none;
+}
+
+/* Normal state: soft white with purple glow */
+#pet.state-normal {
+  background-color: #f0f0f0;
+  color: #333;
+  box-shadow: 0 0 20px rgba(200, 180, 255, 0.4);
+}
+
+/* Sick state: grey, desaturated */
+#pet.state-sick {
+  background-color: #888;
+  color: #222;
+  box-shadow: 0 0 20px rgba(100, 100, 100, 0.5);
+}
+
+/* Evolved state: gold */
+#pet.state-evolved {
+  background-color: #ffd700;
+  color: #5a3e00;
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.7);
+}
+
+/* ── State message ── */
+#state-message {
+  font-size: 0.9rem;
+  text-align: center;
+  min-height: 1.2em;
+  color: #ffb347;
+}
+
+/* ── Stats section ── */
+#stats {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.stat-row {
+  display: grid;
+  grid-template-columns: 90px 1fr 36px;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.stat-row label {
+  font-size: 0.85rem;
+  text-align: right;
+  color: #aaa;
+}
+
+/* Track (background) */
+.bar-track {
+  height: 14px;
+  background: #2e2e4a;
+  border-radius: 7px;
+  overflow: hidden;
+}
+
+/* Fill */
+.bar-fill {
+  height: 100%;
+  width: 80%;             /* set by JS */
+  border-radius: 7px;
+  transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+/* Color states — applied via JS by updating a data attribute on the fill */
+.bar-fill.color-green  { background-color: #4caf50; }
+.bar-fill.color-yellow { background-color: #ffc107; }
+.bar-fill.color-red    { background-color: #f44336; }
+
+.stat-value {
+  font-size: 0.8rem;
+  color: #ccc;
+  text-align: right;
+}

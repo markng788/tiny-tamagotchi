@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tiny Tamagotchi</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app">
+    <h1>Tiny Tamagotchi</h1>
+
+    <!-- Pet display -->
+    <div id="pet" class="state-normal">
+      <div id="pet-face">
+        <span id="pet-eyes">^ ^</span><br />
+        <span id="pet-mouth">ω</span>
+      </div>
+    </div>
+
+    <p id="state-message"></p>
+
+    <!-- Stats -->
+    <div id="stats">
+      <div class="stat-row">
+        <label>Hunger</label>
+        <div class="bar-track">
+          <div id="bar-hunger" class="bar-fill"></div>
+        </div>
+        <span id="val-hunger" class="stat-value">80</span>
+      </div>
+
+      <div class="stat-row">
+        <label>Happiness</label>
+        <div class="bar-track">
+          <div id="bar-happiness" class="bar-fill"></div>
+        </div>
+        <span id="val-happiness" class="stat-value">80</span>
+      </div>
+
+      <div class="stat-row">
+        <label>Energy</label>
+        <div class="bar-track">
+          <div id="bar-energy" class="bar-fill"></div>
+        </div>
+        <span id="val-energy" class="stat-value">80</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
